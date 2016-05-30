@@ -4,23 +4,33 @@ package se.oscarb.pinapple;
  * Class representing any (PIN) code:
  */
 
-public class Code {
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+@Table(name = "Code")
+public class Code extends Model {
 
     /*
         Fields
      */
+    @Column(name = "Value")
     private int value;
+    @Column(name = "Label")
     private String label;
 
     /*
         Constructors
      */
     public Code() {
+        super();
         value = -1;
         label = null;
     }
 
     public Code(String label, int value) {
+        this();
         this.value = value;
         this.label = label;
     }
