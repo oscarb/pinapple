@@ -69,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Initialize fields
         codeList = new ArrayList<>();
+
+        // Fill codeList
+
+
+
         codeAdapter = new CodeAdapter(codeList);
 
         // Initialize RecyclerView
@@ -133,6 +138,10 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     public void onAddCodeDialogPositiveClick(DialogFragment dialog, Code code) {
         Toast.makeText(MainActivity.this, code.toString(), Toast.LENGTH_SHORT).show();
         int codeListSize = codeAdapter.getItemCount();
+
+        // Save to database
+        //code.save();
+
         codeList.add(code);
         codeAdapter.notifyItemInserted(codeListSize);
 
@@ -142,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         Crypto crypto = new XorCrypto();
         Log.i(TAG, "Encrypted: " + crypto.encrypt(passcode, code.getValue()));
         Log.i(TAG, "Encrypted and decrypted: " + crypto.decrypt(passcode, crypto.encrypt(passcode, code.getValue())));
+
 
     }
 
