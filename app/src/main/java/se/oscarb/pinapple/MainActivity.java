@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import java.util.List;
  * TODO: Adjust to landscape/tablet
  * TODO: Get back data upon rotation
  * TODO: Check user input
+ * TODO: Error message
 
  */
 
@@ -33,11 +35,15 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
 
     // Fields
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private List<Code> codeList;
-    //private CodeAdapter codeAdapter;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter codeAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    private int passcode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +52,20 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Started from PasscodeActivity?
         Intent fromPasscodeIntent = getIntent();
-        String passcode = fromPasscodeIntent.getStringExtra(PasscodeActivity.PASSCODE_MESSAGE);
+        passcode = fromPasscodeIntent.getIntExtra(PasscodeActivity.PASSCODE_MESSAGE, -1);
 
         // TODO: Check earlier in the Activity Lifecycle
 
         // No passcode entered or not started from PasscodeActivity
-        if(passcode == null) {
+        if(passcode == -1) {
 
             // Start PasscodeActivity
             Intent toPasscodeIntent = new Intent(this, PasscodeActivity.class);
             startActivity(toPasscodeIntent);
 
         }
+
+
 
         // Initialize fields
         codeList = new ArrayList<>();
@@ -130,6 +138,10 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Scroll to last card added
         recyclerView.scrollToPosition(codeAdapter.getItemCount() - 1);
+
+        Crypto crypto = new XorCrypto();
+        Log.i(TAG, "Encrypted: " + crypto.encrypt(passcode, code.getValue()));
+        Log.i(TAG, "Encrypted and decrypted: " + crypto.decrypt(passcode, crypto.encrypt(passcode, code.getValue())));
 
     }
 

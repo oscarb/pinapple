@@ -62,7 +62,9 @@ public class AddCodeDialogFragment extends DialogFragment {
         builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Code code = new Code(labelText.getText().toString(), codeText.getText().toString());
+
+                    int codeValue = Integer.parseInt(codeText.getText().toString());
+                    Code code = new Code(labelText.getText().toString(), codeValue);
                     hostActivity.onAddCodeDialogPositiveClick(AddCodeDialogFragment.this, code);
                 }
             });

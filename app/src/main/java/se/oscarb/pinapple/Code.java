@@ -9,23 +9,23 @@ public class Code {
     /*
         Fields
      */
-    private String value;
+    private int value;
     private String label;
 
     /*
         Constructors
      */
     public Code() {
-        value = null;
+        value = -1;
         label = null;
     }
 
-    public Code(String label, String value) {
+    public Code(String label, int value) {
         this.value = value;
         this.label = label;
     }
 
-    public Code(String value) {
+    public Code(int value) {
         this();
         this.value = value;
     }
@@ -33,11 +33,11 @@ public class Code {
     /*
         Methods
      */
-    public String getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
