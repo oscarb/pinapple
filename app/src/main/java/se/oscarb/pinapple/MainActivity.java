@@ -3,9 +3,12 @@ package se.oscarb.pinapple;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
@@ -16,12 +19,25 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * TODO: Save encrypted codes to SharedPreferences
+ * TODO: Add icon
+ * TODO: Encrypt/decrypt codes
+ * TODO: Adjust to landscape/tablet
+ * TODO: Get back data upon rotation
+ * TODO: Check user input
+
+ */
+
 public class MainActivity extends AppCompatActivity implements AddCodeDialogFragment.AddCodeDialogListener {
 
 
     // Fields
     private List<Code> codeList;
-    private CodeAdapter codeAdapter;
+    //private CodeAdapter codeAdapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter codeAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // Started from PasscodeActivity?
         Intent fromPasscodeIntent = getIntent();
         String passcode = fromPasscodeIntent.getStringExtra(PasscodeActivity.PASSCODE_MESSAGE);
+
+        // TODO: Check earlier in the Activity Lifecycle
 
         // No passcode entered or not started from PasscodeActivity
         if(passcode == null) {
@@ -43,16 +61,26 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Initialize fields
         codeList = new ArrayList<>();
-        codeAdapter = new CodeAdapter(this, codeList);
+        codeAdapter = new CodeAdapter(codeList);
 
-        // Set up grid
-        GridView gridView = (GridView) findViewById(R.id.gridview);
-        gridView.setAdapter(codeAdapter);
+        // Initialize RecyclerView
+        recyclerView = (RecyclerView) findViewById(R.id.code_list_layout);
+        recyclerView.setAdapter(codeAdapter);
+        //recyclerView.setHasFixedSize(true); // improves performance
+        // Set LayoutManager
+        //layoutManager = new GridLayoutManager(this, GridLayoutManager.DEFAULT_SPAN_COUNT);
+        //recyclerView.setLayoutManager(layoutManager);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        //recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        int columnGutterInPixels = getResources().getDimensionPixelSize(R.dimen.gutter);
+        recyclerView.addItemDecoration(new CodeCardItemDecoration(columnGutterInPixels));
+        //recyclerView.addItemDecoration(new ItemDec);
 
-        // TODO: Add onItemLongClickListener for removal of codes
+        // TODO: Add onItemLongClickListener for removal of codes?
 
         // Passcode entered
-        Toast.makeText(MainActivity.this, passcode, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(MainActivity.this, passcode, Toast.LENGTH_SHORT).show();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,8 +124,12 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     @Override
     public void onAddCodeDialogPositiveClick(DialogFragment dialog, Code code) {
         Toast.makeText(MainActivity.this, code.toString(), Toast.LENGTH_SHORT).show();
+        int codeListSize = codeAdapter.getItemCount();
         codeList.add(code);
-        codeAdapter.notifyDataSetChanged();
+        codeAdapter.notifyItemInserted(codeListSize);
+
+        // Scroll to last card added
+        recyclerView.scrollToPosition(codeAdapter.getItemCount() - 1);
 
     }
 

@@ -5,19 +5,25 @@
     android:padding="24dp"
     android:orientation="vertical">
 
+    <!-- EditText added is not a TextInputEditText. Please switch to using that class instead.
+         see http://stackoverflow.com/a/36269036/6131896 -->
+
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:hint="@string/label"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="16dp"
+            android:inputType="textAutoCorrect|textCapSentences"
+
+            />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -25,14 +31,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:hint="@string/code"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="16dp"
+            android:inputType="number"
+            android:digits="0123456789"/>
 
     </android.support.design.widget.TextInputLayout>
 

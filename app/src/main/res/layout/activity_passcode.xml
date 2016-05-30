@@ -20,6 +20,10 @@
         android:id="@+id/passcode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:digits="0123456789"
+        android:hint="@string/passcode"
+        android:inputType="numberPassword"
+
         />
 
     <Button
@@ -27,6 +31,8 @@
         android:layout_height="wrap_content"
         android:text="@string/show_codes"
         android:onClick="showCodes"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/white"
         />
 
 </LinearLayout>

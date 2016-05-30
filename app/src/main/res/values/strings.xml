@@ -9,4 +9,5 @@
     <string name="add_code">Add code</string>
     <string name="label">Label</string>
     <string name="code">Code</string>
+    <string name="passcode">Passcode</string>
 </resources>
