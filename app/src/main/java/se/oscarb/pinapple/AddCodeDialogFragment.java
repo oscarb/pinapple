@@ -1,19 +1,14 @@
 package se.oscarb.pinapple;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 public class AddCodeDialogFragment extends DialogFragment {
@@ -25,7 +20,7 @@ public class AddCodeDialogFragment extends DialogFragment {
 
     // Interface for passing back data to host
     public interface AddCodeDialogListener {
-        public void onAddCodeDialogPositiveClick(DialogFragment dialog, Code code);
+        public void onAddCodeDialogPositiveClick(DialogFragment dialog, String label, int value);
         public void onAddCodeDialogNegativeClick(DialogFragment dialog);
 
     }
@@ -62,10 +57,10 @@ public class AddCodeDialogFragment extends DialogFragment {
         builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                     int codeValue = Integer.parseInt(codeText.getText().toString());
-                    Code code = new Code(labelText.getText().toString(), codeValue);
-                    hostActivity.onAddCodeDialogPositiveClick(AddCodeDialogFragment.this, code);
+                    hostActivity.onAddCodeDialogPositiveClick(AddCodeDialogFragment.this,
+                            labelText.getText().toString(),
+                            codeValue);
                 }
             });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

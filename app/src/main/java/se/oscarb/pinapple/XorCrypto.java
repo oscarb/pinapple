@@ -8,12 +8,12 @@ public class XorCrypto implements Crypto {
 
 
     @Override
-    public int encrypt(int key, int messagePlainText) {
+    public int encrypt(int messagePlainText, int key) {
         return key ^ messagePlainText;
     }
 
     @Override
-    public int decrypt(int key, int messageEncrypted) {
+    public int decrypt(int messageEncrypted, int key) {
         return key ^ messageEncrypted;
     }
 }

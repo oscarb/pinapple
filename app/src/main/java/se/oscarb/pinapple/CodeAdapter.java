@@ -1,6 +1,5 @@
 package se.oscarb.pinapple;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -8,14 +7,8 @@ import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
@@ -23,17 +16,20 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
     // Fields
     private Context context;
     private List<Code> codeList;
+    private int passcode;
 
 
     // Constructor
-    public CodeAdapter(Context c, List<Code> codes) {
+    public CodeAdapter(Context c, List<Code> codes, int passcode) {
         context = c;
         codeList = codes;
+        this.passcode = passcode;
     }
 
     // Constructor
-    public CodeAdapter(List<Code> codes) {
-        codeList = codes;
+    public CodeAdapter(List<Code> codeList, int passcode) {
+        this.codeList = codeList;
+        this.passcode = passcode;
     }
 
     @Override
@@ -68,13 +64,18 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
 
             // Set data
             //labelText.setText(code.getLabel());
-            //codeText.setText(code.getValue());
+            //codeText.setText(code.getEncryptedValue());
 
             // title 24sp or 14sp
 
             // http://stackoverflow.com/questions/16335178/different-size-of-strings-in-the-same-textview
 
-            String text = code.getLabel() + "\n" + code.getValue();
+            // Decrypt code and pad to 4 digits
+            Crypto crypto = new XorCrypto();
+            int decryptedCode = crypto.decrypt(code.getEncryptedValue(), passcode);
+            String codeString = String.format("%04d", decryptedCode);
+
+            String text = code.getLabel() + "\n" + codeString;
             SpannableString spannableString = new SpannableString(text);
             spannableString.setSpan(new RelativeSizeSpan(2), code.getLabel().length() + 1, text.length(), 0);
             contentText.setText(spannableString);

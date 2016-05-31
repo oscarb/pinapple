@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -14,14 +12,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /*
- * TODO: Save encrypted codes to SharedPreferences
  * TODO: Add icon
  * TODO: Encrypt/decrypt codes
  * TODO: Adjust to landscape/tablet
@@ -68,13 +62,14 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
 
         // Initialize fields
-        codeList = new ArrayList<>();
+        codeList = Code.getAll();
+
 
         // Fill codeList
 
 
 
-        codeAdapter = new CodeAdapter(codeList);
+        codeAdapter = new CodeAdapter(codeList, passcode);
 
         // Initialize RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.code_list_layout);
@@ -135,12 +130,16 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
     // Implemented from AddCodeDialogListener within AddCodeDialogFragment
     @Override
-    public void onAddCodeDialogPositiveClick(DialogFragment dialog, Code code) {
-        Toast.makeText(MainActivity.this, code.toString(), Toast.LENGTH_SHORT).show();
+    public void onAddCodeDialogPositiveClick(DialogFragment dialog, String label, int value) {
+        //Toast.makeText(MainActivity.this, code.toString(), Toast.LENGTH_SHORT).show();
         int codeListSize = codeAdapter.getItemCount();
 
         // Save to database
-        //code.save();
+        Crypto crypto = new XorCrypto();
+        int encryptedValue = crypto.decrypt(value, passcode);
+
+        Code code = new Code(label, encryptedValue);
+        code.save();
 
         codeList.add(code);
         codeAdapter.notifyItemInserted(codeListSize);
@@ -148,9 +147,8 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // Scroll to last card added
         recyclerView.scrollToPosition(codeAdapter.getItemCount() - 1);
 
-        Crypto crypto = new XorCrypto();
-        Log.i(TAG, "Encrypted: " + crypto.encrypt(passcode, code.getValue()));
-        Log.i(TAG, "Encrypted and decrypted: " + crypto.decrypt(passcode, crypto.encrypt(passcode, code.getValue())));
+        Log.i(TAG, "Encrypted: " + crypto.encrypt(code.getEncryptedValue(), passcode));
+        Log.i(TAG, "Encrypted and decrypted: " + crypto.decrypt(crypto.encrypt(code.getEncryptedValue(), passcode), passcode));
 
 
     }
