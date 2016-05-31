@@ -72,7 +72,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
 
             // Decrypt code and pad to 4 digits
             Crypto crypto = new XorCrypto();
-            int decryptedCode = crypto.decrypt(code.getEncryptedValue(), passcode);
+            int decryptedCode = Math.abs(crypto.decrypt(code.getEncryptedValue(), passcode));
             String codeString = String.format("%04d", decryptedCode);
 
             String text = code.getLabel() + "\n" + codeString;

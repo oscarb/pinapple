@@ -13,15 +13,16 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.activeandroid.query.Delete;
+
 import java.util.List;
 
 /*
  * TODO: Add icon
- * TODO: Encrypt/decrypt codes
  * TODO: Adjust to landscape/tablet
- * TODO: Get back data upon rotation
  * TODO: Check user input
  * TODO: Error message
+ * TODO: Keep scroll position on rotation
 
  */
 
@@ -122,6 +123,11 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            int codeListSize = codeAdapter.getItemCount();
+            new Delete().from(Code.class).execute();
+            codeList.clear();
+            codeAdapter.notifyItemRangeRemoved(0, codeListSize);
+
             return true;
         }
 
