@@ -52,6 +52,7 @@ public class PasscodeActivity extends AppCompatActivity {
         });
 
     }
+    
 
     public void showCodes(View view) {
         showCodes();
@@ -69,6 +70,7 @@ public class PasscodeActivity extends AppCompatActivity {
 
 
             Intent toMainActivityIntent = new Intent(this, MainActivity.class);
+            toMainActivityIntent.setFlags(toMainActivityIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
             toMainActivityIntent.putExtra(PASSCODE_MESSAGE, passcode);
             startActivity(toMainActivityIntent);
             passcodeEditText.setText("");
