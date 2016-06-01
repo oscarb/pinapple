@@ -10,4 +10,6 @@
     <string name="label">Label</string>
     <string name="code">Code</string>
     <string name="passcode">Passcode</string>
+    <string name="logo">Logo</string>
+    <string name="passcode_information">Any passcode will show PIN codes. But... only the one entered when adding PIN codes will display the right ones!</string>
 </resources>

@@ -8,5 +8,5 @@
     <color name="colorSecondaryText">#727272</color>
     <color name="colorIcons">#212121</color>
     <color name="colorDivider">#B6B6B6</color>
-    <color name="colorActivityBackground">#DEDEDE</color> <!-- E6E6E6 -->
+    <color name="colorActivityBackground">#EEEEEE</color> <!-- E6E6E6 -->
 </resources>

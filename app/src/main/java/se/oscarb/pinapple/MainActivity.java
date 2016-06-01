@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.activeandroid.query.Delete;
 
@@ -79,8 +80,9 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // Set LayoutManager
         //layoutManager = new GridLayoutManager(this, GridLayoutManager.DEFAULT_SPAN_COUNT);
         //recyclerView.setLayoutManager(layoutManager);
+
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.spanCount), StaggeredGridLayoutManager.VERTICAL));
         //recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         int columnGutterInPixels = getResources().getDimensionPixelSize(R.dimen.gutter);
         recyclerView.addItemDecoration(new CodeCardItemDecoration(columnGutterInPixels));

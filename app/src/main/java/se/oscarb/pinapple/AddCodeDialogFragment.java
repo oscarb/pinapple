@@ -104,7 +104,7 @@ public class AddCodeDialogFragment extends DialogFragment implements TextWatcher
     }
 
     private void checkPositiveButton(AlertDialog dialog) {
-        if(labelText.length() > 0 && codeText.length() > 0) {
+        if(labelText.getText().toString().trim().length() > 0 && codeText.length() > 0) {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
         } else {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
@@ -132,7 +132,7 @@ public class AddCodeDialogFragment extends DialogFragment implements TextWatcher
         // Check for input errors in EditText for label
         if(labelText.hasFocus()) {
             labelTextInputLayout.setError(null);
-            if (labelText.length() == 0) {
+            if (labelText.getText().toString().trim().length() == 0) {
                 labelTextInputLayout.setError("Label is required");
             }
         }
