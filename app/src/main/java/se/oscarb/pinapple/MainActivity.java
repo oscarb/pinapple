@@ -107,14 +107,19 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        // Clear all codes
+
         if (id == R.id.action_clear_all) {
+            // Clear all codes
             int codeListSize = codeAdapter.getItemCount();
             new Delete().from(Code.class).execute();
             codeList.clear();
             codeAdapter.notifyItemRangeRemoved(0, codeListSize);
 
             return true;
+        } else if (id == R.id.action_lock) {
+            // Back to PasscodeActivity
+            Intent toPasscodeActivityIntent = new Intent(this, PasscodeActivity.class);
+            startActivity(toPasscodeActivityIntent);
         }
 
         return super.onOptionsItemSelected(item);
