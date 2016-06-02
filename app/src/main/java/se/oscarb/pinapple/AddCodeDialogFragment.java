@@ -3,7 +3,6 @@ package se.oscarb.pinapple;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class AddCodeDialogFragment extends DialogFragment implements TextWatcher {
 
@@ -25,15 +23,6 @@ public class AddCodeDialogFragment extends DialogFragment implements TextWatcher
     private TextInputLayout labelTextInputLayout;
     private TextInputLayout codeTextInputLayout;
     private Dialog dialog;
-
-
-
-    // Interface for passing back data to host
-    public interface AddCodeDialogListener {
-        public void onAddCodeDialogPositiveClick(DialogFragment dialog, String label, int value);
-        public void onAddCodeDialogNegativeClick(DialogFragment dialog);
-
-    }
 
     // Get the host activity and save it to hostActivity
     @Override
@@ -54,7 +43,7 @@ public class AddCodeDialogFragment extends DialogFragment implements TextWatcher
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // Inflate view and save references to textfields
+        // Inflate view and save references to EditTexts
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_add_code, null);
         labelText = (EditText) view.findViewById(R.id.label);
@@ -62,49 +51,49 @@ public class AddCodeDialogFragment extends DialogFragment implements TextWatcher
         labelTextInputLayout = (TextInputLayout) view.findViewById(R.id.label_input_layout);
         codeTextInputLayout = (TextInputLayout) view.findViewById(R.id.code_input_layout);
 
-
-
+        // Let this class listen to both EditTexts for changes
         labelText.addTextChangedListener(this);
         codeText.addTextChangedListener(this);
-
-       // Toast.makeText(AddCodeDialogFragment.this, labelText.toString(), Toast.LENGTH_SHORT).show();
-        Log.i("Text", ""+labelText);
-
 
         // Build the Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //builder.setTitle(R.string.add_code);
         builder.setView(view);
+        // User clicks "Add Code"
         builder.setPositiveButton(R.string.add_code, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    int codeValue = Integer.parseInt(codeText.getText().toString());
-                    hostActivity.onAddCodeDialogPositiveClick(AddCodeDialogFragment.this,
-                            labelText.getText().toString(),
-                            codeValue);
-                }
-            });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Send code and label to MainActivity, encryption happens there
+                int codeValue = Integer.parseInt(codeText.getText().toString());
+                hostActivity.onAddCodeDialogPositiveClick(AddCodeDialogFragment.this,
+                        labelText.getText().toString(),
+                        codeValue);
+            }
+        });
+        // User clicks "Cancel"
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    hostActivity.onAddCodeDialogNegativeClick(AddCodeDialogFragment.this);
-                }
-            });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                hostActivity.onAddCodeDialogNegativeClick(AddCodeDialogFragment.this);
+            }
+        });
 
-        // Disable add button
         dialog = builder.create();
+
+        // Disable add code button
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                checkPositiveButton((AlertDialog)dialog);
+                checkPositiveButton((AlertDialog) dialog);
             }
         });
 
         return dialog;
     }
 
+    // Check for valid input in both EditTexts, then enable positive button
     private void checkPositiveButton(AlertDialog dialog) {
-        if(labelText.getText().toString().trim().length() > 0 && codeText.length() > 0) {
+        if (labelText.getText().toString().trim().length() > 0 && codeText.length() > 0) {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
         } else {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
@@ -130,23 +119,26 @@ public class AddCodeDialogFragment extends DialogFragment implements TextWatcher
         checkPositiveButton((AlertDialog) dialog);
 
         // Check for input errors in EditText for label
-        if(labelText.hasFocus()) {
+        if (labelText.hasFocus()) {
             labelTextInputLayout.setError(null);
             if (labelText.getText().toString().trim().length() == 0) {
-                labelTextInputLayout.setError("Label is required");
+                labelTextInputLayout.setError(getResources().getString(R.string.label_is_required));
             }
         }
 
         // Check for input errors in EditText for label
-        if(codeText.hasFocus()) {
+        if (codeText.hasFocus()) {
             codeTextInputLayout.setError(null);
             if (codeText.length() == 0) {
-                codeTextInputLayout.setError("Code is required");
+                codeTextInputLayout.setError(getResources().getString(R.string.code_is_required));
             }
         }
-
-
     }
 
+    // Interface for passing back data to host
+    public interface AddCodeDialogListener {
+        void onAddCodeDialogPositiveClick(DialogFragment dialog, String label, int value);
+        void onAddCodeDialogNegativeClick(DialogFragment dialog);
+    }
 
 }

@@ -4,7 +4,6 @@ package se.oscarb.pinapple;
  * Class representing any (PIN) code:
  */
 
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -46,6 +45,13 @@ public class Code extends Model {
     }
 
     /*
+     * Database Methods
+     */
+    public static List<Code> getAll() {
+        return new Select().from(Code.class).execute();
+    }
+
+    /*
         Methods
      */
     public int getEncryptedValue() {
@@ -70,14 +76,5 @@ public class Code extends Model {
                 "encryptedValue='" + encryptedValue + '\'' +
                 ", label='" + label + '\'' +
                 '}';
-    }
-
-
-
-    /*
-     * Database Methods
-     */
-    public static List<Code> getAll() {
-        return new Select().from(Code.class).execute();
     }
 }

@@ -1,9 +1,9 @@
 package se.oscarb.pinapple;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,8 +23,10 @@ public class PasscodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passcode);
 
+        // Initialize fields
         passcodeEditText = (EditText) findViewById(R.id.passcode);
         textInputLayout = (TextInputLayout) findViewById(R.id.input_layout);
+
 
         passcodeEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -39,35 +41,27 @@ public class PasscodeActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                textInputLayout.setError(null);
-                switch(s.length()) {
-                    case 0: textInputLayout.setError("No digits entered");
-                            break;
-                    case 4: showCodes();
-                            break;
-                    default: textInputLayout.setError("Enter four digits");
-                            break;
+                // Show codes once 4 digits are entered
+                if(s.length() == 4) {
+                        showCodes();
                 }
             }
         });
 
     }
-    
 
+
+    // Start MainActivity
     public void showCodes(View view) {
         showCodes();
 
-
-        // TODO: Only run method when EditText is not empty
-
     }
 
-    public void showCodes() {
+    private void showCodes() {
 
-
+        // Verify input is valid int
         try {
             int passcode = Integer.parseInt(passcodeEditText.getText().toString());
-
 
             Intent toMainActivityIntent = new Intent(this, MainActivity.class);
             toMainActivityIntent.setFlags(toMainActivityIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -79,9 +73,6 @@ public class PasscodeActivity extends AppCompatActivity {
         } catch (NumberFormatException exception) {
             Log.w(TAG, "NumberFormatException" + exception.getMessage());
         }
-
-
-        // TODO: Only run method when EditText is not empty
 
     }
 }

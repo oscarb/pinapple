@@ -9,22 +9,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
 import com.activeandroid.query.Delete;
 
 import java.util.List;
 
 /*
- * TODO: Add icon
- * TODO: Adjust to landscape/tablet
- * TODO: Check user input
- * TODO: Error message
  * TODO: Keep scroll position on rotation
-
+ * TODO: Add support for codees longer than 9 digits and increased security with passcode padding
+ * TODO: Check "Analyze > Inspect Code..."
+ *
  */
 
 public class MainActivity extends AppCompatActivity implements AddCodeDialogFragment.AddCodeDialogListener {
@@ -44,16 +41,13 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         // Started from PasscodeActivity?
         Intent fromPasscodeIntent = getIntent();
         passcode = fromPasscodeIntent.getIntExtra(PasscodeActivity.PASSCODE_MESSAGE, -1);
 
-        // TODO: Check earlier in the Activity Lifecycle
-
         // No passcode entered or not started from PasscodeActivity
-        if(passcode == -1) {
+        if (passcode == -1) {
 
             // Start PasscodeActivity
             Intent toPasscodeIntent = new Intent(this, PasscodeActivity.class);
@@ -62,40 +56,30 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         }
 
 
+        setContentView(R.layout.activity_main);
 
         // Initialize fields
-        codeList = Code.getAll();
-
 
         // Fill codeList
-
-
-
+        codeList = Code.getAll(); // get from SQLite
         codeAdapter = new CodeAdapter(codeList, passcode);
 
         // Initialize RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.code_list_layout);
         recyclerView.setAdapter(codeAdapter);
-        //recyclerView.setHasFixedSize(true); // improves performance
+        recyclerView.setHasFixedSize(true); // improves performance
         // Set LayoutManager
-        //layoutManager = new GridLayoutManager(this, GridLayoutManager.DEFAULT_SPAN_COUNT);
-        //recyclerView.setLayoutManager(layoutManager);
-
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.spanCount), StaggeredGridLayoutManager.VERTICAL));
-        //recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         int columnGutterInPixels = getResources().getDimensionPixelSize(R.dimen.gutter);
         recyclerView.addItemDecoration(new CodeCardItemDecoration(columnGutterInPixels));
-        //recyclerView.addItemDecoration(new ItemDec);
 
         // TODO: Add onItemLongClickListener for removal of codes?
 
-        // Passcode entered
-        // Toast.makeText(MainActivity.this, passcode, Toast.LENGTH_SHORT).show();
-
+        // Add the App Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Add the Floating Action Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
@@ -123,8 +107,8 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        // Clear all codes
+        if (id == R.id.action_clear_all) {
             int codeListSize = codeAdapter.getItemCount();
             new Delete().from(Code.class).execute();
             codeList.clear();
@@ -139,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     // Implemented from AddCodeDialogListener within AddCodeDialogFragment
     @Override
     public void onAddCodeDialogPositiveClick(DialogFragment dialog, String label, int value) {
-        //Toast.makeText(MainActivity.this, code.toString(), Toast.LENGTH_SHORT).show();
         int codeListSize = codeAdapter.getItemCount();
 
         // Save to database
@@ -154,10 +137,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Scroll to last card added
         recyclerView.scrollToPosition(codeAdapter.getItemCount() - 1);
-
-        Log.i(TAG, "Encrypted: " + crypto.encrypt(code.getEncryptedValue(), passcode));
-        Log.i(TAG, "Encrypted and decrypted: " + crypto.decrypt(crypto.encrypt(code.getEncryptedValue(), passcode), passcode));
-
 
     }
 

@@ -23,10 +23,6 @@ public class CodeCardItemDecoration extends RecyclerView.ItemDecoration {
         outRect.top = margin;
         outRect.bottom = margin;
 
-        /*
-        if(parent.getChildLayoutPosition(view) == 0) {
-            outRect.top = margin;
-        }*/
     }
 
 

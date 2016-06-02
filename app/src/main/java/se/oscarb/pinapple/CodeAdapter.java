@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
 
@@ -32,49 +33,42 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
         this.passcode = passcode;
     }
 
+    /* From RecyclerView.Adapte */
     @Override
     public int getItemCount() {
         return codeList.size();
     }
+
 
     @Override
     public CodeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        // Inflate custom layout
+        // Inflate custom layout, a Card
         View codeCardView = inflater.inflate(R.layout.card_code, parent, false);
 
         // Return a ViewHolder
-        ViewHolder viewHolder = new ViewHolder(codeCardView);
-        return viewHolder;
+        return new ViewHolder(codeCardView);
     }
 
+    // Populate cards
     @Override
     public void onBindViewHolder(CodeAdapter.ViewHolder viewHolder, int position) {
         // Get static references from our ViewHolder
-        TextView labelText = viewHolder.labelText;
-        TextView codeText = viewHolder.codeText;
         TextView contentText = viewHolder.contentText;
 
-
         // Populate RecyclerView with each CardView
-        if(codeList.size() > 0) {
+        if (codeList.size() > 0) {
             Code code = codeList.get(position);
 
-            // Set data
-            //labelText.setText(code.getLabel());
-            //codeText.setText(code.getEncryptedValue());
-
-            // title 24sp or 14sp
-
+            // Set data with only one EditText
             // http://stackoverflow.com/questions/16335178/different-size-of-strings-in-the-same-textview
 
             // Decrypt code and pad to 4 digits
             Crypto crypto = new XorCrypto();
             int decryptedCode = Math.abs(crypto.decrypt(code.getEncryptedValue(), passcode));
-            String codeString = String.format("%04d", decryptedCode);
-
+            String codeString = String.format(Locale.getDefault(), "%04d", decryptedCode);
             String text = code.getLabel() + "\n" + codeString;
             SpannableString spannableString = new SpannableString(text);
             spannableString.setSpan(new RelativeSizeSpan(2), code.getLabel().length() + 1, text.length(), 0);
