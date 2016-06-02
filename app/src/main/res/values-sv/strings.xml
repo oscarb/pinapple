@@ -13,7 +13,7 @@
     <string name="label_is_required">Ange ett namn</string>
     <string name="logo">Logotyp</string>
     <string name="passcode">Ange en fyrsiffrig lösenord</string>
-    <string name="passcode_information">Alla lösenord visar koder. Men,bara lösenordet som användes när koderna lades till kommer visa de rätta koderna.</string>
+    <string name="passcode_information">Alla lösenord visar koder. Men, bara lösenordet som användes när koderna lades till kommer visa de rätta koderna.</string>
     <string name="show_codes">Visa koder</string>
     <string name="lock">Lås</string>
 </resources>
