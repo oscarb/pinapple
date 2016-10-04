@@ -23,6 +23,8 @@ public class PasscodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passcode);
 
+        Log.d(TAG, "In the onCreate() event");
+
         // Initialize fields
         passcodeEditText = (EditText) findViewById(R.id.passcode);
         textInputLayout = (TextInputLayout) findViewById(R.id.input_layout);
@@ -64,11 +66,12 @@ public class PasscodeActivity extends AppCompatActivity {
             int passcode = Integer.parseInt(passcodeEditText.getText().toString());
 
             Intent toMainActivityIntent = new Intent(this, MainActivity.class);
-            toMainActivityIntent.setFlags(toMainActivityIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+            //toMainActivityIntent.setFlags(toMainActivityIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
             toMainActivityIntent.putExtra(PASSCODE_MESSAGE, passcode);
             startActivity(toMainActivityIntent);
             passcodeEditText.setText("");
             textInputLayout.setError(null);
+            //finish();
 
         } catch (NumberFormatException exception) {
             Log.w(TAG, "NumberFormatException" + exception.getMessage());

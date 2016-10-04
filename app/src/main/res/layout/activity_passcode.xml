@@ -8,6 +8,8 @@
     android:orientation="vertical"
     tools:context="se.oscarb.pinapple.PasscodeActivity">
 
+
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +39,9 @@
     </android.support.design.widget.TextInputLayout>
 
     <TextView
+        android:id="@+id/passcode_information"
         android:text="@string/passcode_information"
         style="@style/information_highlight" />
+
 
 </LinearLayout>

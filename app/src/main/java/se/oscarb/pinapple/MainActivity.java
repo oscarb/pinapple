@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 
 import java.util.List;
@@ -42,6 +43,10 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ActiveAndroid.initialize(this);
+
+        Log.d(TAG, "In the onCreate() event");
+
         // Started from PasscodeActivity?
         Intent fromPasscodeIntent = getIntent();
         passcode = fromPasscodeIntent.getIntExtra(PasscodeActivity.PASSCODE_MESSAGE, -1);
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
             // Start PasscodeActivity
             Intent toPasscodeIntent = new Intent(this, PasscodeActivity.class);
             startActivity(toPasscodeIntent);
+            finish();
 
         }
 
@@ -92,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -119,7 +124,9 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         } else if (id == R.id.action_lock) {
             // Back to PasscodeActivity
             Intent toPasscodeActivityIntent = new Intent(this, PasscodeActivity.class);
+            //toPasscodeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(toPasscodeActivityIntent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
