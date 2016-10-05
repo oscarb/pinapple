@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_size_plus_margin">88</dimen>
     <dimen name="gutter">4dp</dimen>
     <dimen name="passcode_edit_text_width">200sp</dimen>
     <dimen name="passcode_information_width">300dp</dimen>
