@@ -10,9 +10,11 @@
     <string name="code">Code</string>
     <string name="passcode">Enter a four digit passcode</string>
     <string name="logo">Logo</string>
-    <string name="passcode_information">Any passcode will show PIN codes. But... only the one entered when adding PIN codes will display the right ones!</string>
+    <string name="passcode_information">Any passcode will show PIN codes. But… only the one entered when adding PIN codes will display the right ones!</string>
     <string name="label_is_required">Label is required</string>
     <string name="code_is_required">Code is required</string>
     <string name="clear_all">Clear all</string>
     <string name="lock">Lock</string>
+    <string name="code_added">Code added</string>
+    <string name="code_removed">Removed code</string>
 </resources>

@@ -16,4 +16,6 @@
     <string name="passcode_information">Alla lösenord visar koder. Men, bara lösenordet som användes när koderna lades till kommer visa de rätta koderna.</string>
     <string name="show_codes">Visa koder</string>
     <string name="lock">Lås</string>
+    <string name="code_added">Koden lades till</string>
+    <string name="code_removed">Koden togs bort</string>
 </resources>

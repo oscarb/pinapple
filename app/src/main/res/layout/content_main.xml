@@ -15,7 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:padding="4dp"
+        android:paddingTop="@dimen/gutter"
+        android:paddingStart="@dimen/gutter"
+        android:paddingEnd="@dimen/gutter"
+        android:paddingBottom="@dimen/fab_size_plus_margin"
         tools:listitem="@layout/card_code" />
 
 </LinearLayout>
