@@ -2,6 +2,7 @@ package se.oscarb.pinapple;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
@@ -13,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private List<Code> codeList;
+
+    private CoordinatorLayout coordinatorLayout;
+
     private RecyclerView recyclerView;
     private RecyclerView.Adapter codeAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         setContentView(R.layout.activity_main);
 
         // Initialize fields
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
         // Fill codeList
         codeList = Code.getAll(); // get from SQLite
@@ -152,8 +156,8 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // Scroll to last card added
         recyclerView.scrollToPosition(codeAdapter.getItemCount() - 1);
 
-        // Show snackbar
-        Snackbar snackbar = Snackbar.make(recyclerView, "Snackbar example", Snackbar.LENGTH_LONG);
+        // Show undo action
+        final Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.code_added, Snackbar.LENGTH_LONG);
         snackbar.setAction("Undo", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
                 code.delete();
                 codeAdapter.notifyItemRemoved(codeListSize - 1);
 
-                Toast.makeText(MainActivity.this, "Code deleted", Toast.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, R.string.code_removed, Snackbar.LENGTH_SHORT).show();
             }
         });
         snackbar.show();
