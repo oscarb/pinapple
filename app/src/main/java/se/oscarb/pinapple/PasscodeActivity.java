@@ -44,8 +44,8 @@ public class PasscodeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // Show codes once 4 digits are entered
-                if(s.length() == 4) {
-                        showCodes();
+                if (s.length() == 4) {
+                    showCodes();
                 }
             }
         });
