@@ -158,20 +158,8 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Show undo action
         final Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.code_added, Snackbar.LENGTH_LONG);
-        snackbar.setAction("Undo", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int codeListSize = codeAdapter.getItemCount();
-                Code code = codeList.remove(codeListSize - 1);
-                code.delete();
-                codeAdapter.notifyItemRemoved(codeListSize - 1);
-
-                Snackbar.make(coordinatorLayout, R.string.code_removed, Snackbar.LENGTH_SHORT).show();
-            }
-        });
+        snackbar.setAction("Undo", new UndoClickListener());
         snackbar.show();
-
-
 
     }
 
@@ -179,5 +167,17 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     @Override
     public void onAddCodeDialogNegativeClick(DialogFragment dialog) {
         // No action
+    }
+
+    private class UndoClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            int codeListSize = codeAdapter.getItemCount();
+            Code code = codeList.remove(codeListSize - 1);
+            code.delete();
+            codeAdapter.notifyItemRemoved(codeListSize - 1);
+
+            Snackbar.make(coordinatorLayout, R.string.code_removed, Snackbar.LENGTH_SHORT).show();
+        }
     }
 }
