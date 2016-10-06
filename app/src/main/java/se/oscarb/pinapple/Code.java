@@ -23,7 +23,7 @@ public class Code extends Model {
     private String label;
 
     @Column(name = "DateTimeAdded")
-    private int dateTimeAdded;
+    private long dateTimeAdded;
     @Column(name = "Category")
     private int category;
     @Column(name = "SortOrder")
@@ -44,12 +44,18 @@ public class Code extends Model {
         super();
         encryptedValue = -1;
         label = null;
+        dateTimeAdded = System.currentTimeMillis();
     }
 
     public Code(String label, int encryptedValue) {
         this();
         this.encryptedValue = encryptedValue;
         this.label = label;
+    }
+
+    public Code(String label, int encryptedValue, String pattern) {
+        this(label, encryptedValue);
+        this.pattern = pattern;
     }
 
     public Code(int encryptedValue) {
