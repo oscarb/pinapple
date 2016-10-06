@@ -108,6 +108,11 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        if (BuildConfig.DEBUG) {
+            getMenuInflater().inflate(R.menu.menu_main_debug, menu);
+        }
+
         return true;
     }
 
@@ -119,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         int id = item.getItemId();
 
 
-        if (id == R.id.action_clear_all) {
+        if (id == R.id.action_clear_all && BuildConfig.DEBUG) {
             // Clear all codes
             int codeListSize = codeAdapter.getItemCount();
             new Delete().from(Code.class).execute();
