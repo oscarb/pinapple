@@ -164,7 +164,8 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Encrypt code
         Crypto crypto = new XorCrypto();
-        long encryptedValue = crypto.decrypt(codeValue, passcode);
+
+        long encryptedValue = crypto.encrypt(codeValue, passcode);
 
         // Save to database
         Code code = new Code(label, encryptedValue, pattern);
