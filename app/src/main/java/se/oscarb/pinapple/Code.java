@@ -22,6 +22,19 @@ public class Code extends Model {
     @Column(name = "Label")
     private String label;
 
+    @Column(name = "DateTimeAdded")
+    private int dateTimeAdded;
+    @Column(name = "Category")
+    private int category;
+    @Column(name = "SortOrder")
+    private int sortOrder;
+    @Column(name = "Archived")
+    private boolean isArchived;
+    @Column(name = "Pattern")
+    private String pattern;
+
+
+
     // TODO: Add length for zero padding
 
     /*
