@@ -28,3 +28,5 @@
 -keepclassmembers class * {
     private <fields>;
 }
+
+-keepattributes EnclosingMethod
