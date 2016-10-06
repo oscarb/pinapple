@@ -145,14 +145,29 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
     // Implemented from AddCodeDialogListener within AddCodeDialogFragment
     @Override
-    public void onAddCodeDialogPositiveClick(DialogFragment dialog, String label, int value) {
+    public void onAddCodeDialogPositiveClick(DialogFragment dialog, String label, String codeText) {
         int codeListSize = codeAdapter.getItemCount();
 
-        // Save to database
-        Crypto crypto = new XorCrypto();
-        int encryptedValue = crypto.decrypt(value, passcode);
+        // Generate pattern from code
+        String pattern = "";
+        long codeValue = 0;
+        int multiplier = 1;
+        for (int i = codeText.length() - 1; i >= 0; i--) {
+            if (Character.isDigit(codeText.charAt(i))) {
+                codeValue += Character.getNumericValue(codeText.charAt(i)) * multiplier;
+                multiplier *= 10;
+                pattern = 'd' + pattern;
+            } else {
+                pattern = codeText.charAt(i) + pattern;
+            }
+        }
 
-        Code code = new Code(label, encryptedValue);
+        // Encrypt code
+        Crypto crypto = new XorCrypto();
+        long encryptedValue = crypto.decrypt(codeValue, passcode);
+
+        // Save to database
+        Code code = new Code(label, encryptedValue, pattern);
         code.save();
 
         codeList.add(code);

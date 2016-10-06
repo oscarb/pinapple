@@ -13,7 +13,7 @@ public class XorCrypto implements Crypto {
     }
 
     @Override
-    public int decrypt(int messageEncrypted, int key) {
+    public long decrypt(long messageEncrypted, int key) {
         return key ^ messageEncrypted;
     }
 }

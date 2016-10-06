@@ -9,7 +9,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -64,10 +63,11 @@ public class AddCodeDialogFragment extends DialogFragment implements TextWatcher
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Send code and label to MainActivity, encryption happens there
-                int codeValue = Integer.parseInt(codeText.getText().toString());
+
+                // int codeValue = Integer.parseInt(codeText.getText().toString());
                 hostActivity.onAddCodeDialogPositiveClick(AddCodeDialogFragment.this,
                         labelText.getText().toString(),
-                        codeValue);
+                        codeText.getText().toString());
             }
         });
         // User clicks "Cancel"
@@ -137,7 +137,7 @@ public class AddCodeDialogFragment extends DialogFragment implements TextWatcher
 
     // Interface for passing back data to host
     public interface AddCodeDialogListener {
-        void onAddCodeDialogPositiveClick(DialogFragment dialog, String label, int value);
+        void onAddCodeDialogPositiveClick(DialogFragment dialog, String label, String value);
         void onAddCodeDialogNegativeClick(DialogFragment dialog);
     }
 

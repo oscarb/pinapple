@@ -8,7 +8,8 @@ public interface Crypto {
 
     // Encrypt and decrypt with key and message as int
     int encrypt(int messagePlainText, int key);
-    int decrypt(int messageEncrypted, int key);
+
+    long decrypt(long messageEncrypted, int key);
 
 
 }
