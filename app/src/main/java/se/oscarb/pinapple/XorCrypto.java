@@ -8,10 +8,11 @@ public class XorCrypto implements Crypto {
     /*
         Encrypt
      */
-    @Override
-    public int encrypt(int messagePlainText, int key) {
+
+    public long encrypt(long messagePlainText, long key) {
         return messagePlainText ^ repeatKey(key, getLength(messagePlainText));
     }
+
 
     public long encrypt(long messagePlainText, int key) {
         return messagePlainText ^ repeatKey(key, getLength(messagePlainText));
@@ -25,11 +26,6 @@ public class XorCrypto implements Crypto {
         Decrypt
      */
 
-    @Override
-    public int decrypt(int messagePlainText, int key) {
-        return messagePlainText ^ repeatKey(key, getLength(messagePlainText));
-    }
-
     public long decrypt(long messagePlainText, int key) {
         return messagePlainText ^ repeatKey(key, getLength(messagePlainText));
     }
@@ -42,16 +38,21 @@ public class XorCrypto implements Crypto {
        Utilities
      */
 
-    private static int repeatKey(int key, int length) {
+    private static long repeatKey(int key, int length) {
         return repeatKey(String.valueOf(key), length);
     }
 
-    private static int repeatKey(String key, int length) {
+    private static long repeatKey(long key, int length) {
+        return repeatKey(String.valueOf(key), length);
+    }
+
+
+    private static long repeatKey(String key, int length) {
         String paddedKey = key;
         for (int i = 0; paddedKey.length() < length; i++) {
-            paddedKey = key.charAt(key.length() - 1 - i % key.length()) + paddedKey;
+            paddedKey = paddedKey + key.charAt(i % key.length());
         }
-        return Integer.valueOf(paddedKey);
+        return Long.valueOf(paddedKey);
     }
 
     private static int getLength(int number) {

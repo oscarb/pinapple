@@ -7,9 +7,6 @@ package se.oscarb.pinapple;
 public interface Crypto {
 
     // Encrypt and decrypt with key and message as int
-    int encrypt(int messagePlainText, int key);
-
-    int decrypt(int messageEncrypted, int key);
 
     // Encrypt and decrypt with message as long
     long encrypt(long messagePlainText, int key);

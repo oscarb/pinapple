@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // Generate pattern from code
         String pattern = "";
         long codeValue = 0;
-        int multiplier = 1;
+        long multiplier = 1;
         for (int i = codeText.length() - 1; i >= 0; i--) {
             if (Character.isDigit(codeText.charAt(i))) {
                 codeValue += Character.getNumericValue(codeText.charAt(i)) * multiplier;
