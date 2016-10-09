@@ -18,7 +18,7 @@ public class Code extends Model {
         Fields
      */
     @Column(name = "EncryptedValue")
-    private int encryptedValue;
+    private long encryptedValue;
     @Column(name = "Label")
     private String label;
 
@@ -47,15 +47,15 @@ public class Code extends Model {
         dateTimeAdded = System.currentTimeMillis();
     }
 
-    public Code(String label, int encryptedValue) {
+    public Code(String label, long encryptedValue) {
         this();
         this.encryptedValue = encryptedValue;
         this.label = label;
     }
 
-    public Code(String label, int encryptedValue, String pattern) {
+    public Code(String label, long encryptedValue, String pattern) {
         this(label, encryptedValue);
-        this.pattern = pattern;
+        this.pattern = pattern.trim();
     }
 
     public Code(int encryptedValue) {
@@ -73,11 +73,11 @@ public class Code extends Model {
     /*
         Methods
      */
-    public int getEncryptedValue() {
+    public long getEncryptedValue() {
         return encryptedValue;
     }
 
-    public void setEncryptedValue(int encryptedValue) {
+    public void setEncryptedValue(long encryptedValue) {
         this.encryptedValue = encryptedValue;
     }
 
@@ -87,6 +87,14 @@ public class Code extends Model {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public int getNumberOfDigits() {
+        return getPattern().length() - getPattern().replace("d", "").length();
     }
 
     @Override

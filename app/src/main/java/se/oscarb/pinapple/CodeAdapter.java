@@ -67,8 +67,30 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
 
             // Decrypt code and pad to 4 digits
             Crypto crypto = new XorCrypto();
-            int decryptedCode = Math.abs(crypto.decrypt(code.getEncryptedValue(), passcode));
-            String codeString = String.format(Locale.getDefault(), "%04d", decryptedCode);
+
+            long decryptedCode = Math.abs(crypto.decrypt(code.getEncryptedValue(), passcode));
+
+            String codeString = "";
+            if (code.getPattern() == null) {
+                codeString = String.format(Locale.getDefault(), "%04d", decryptedCode);
+            } else {
+                codeString = code.getPattern();
+
+                String decryptedCodeText = String.valueOf(decryptedCode);
+                for (int i = decryptedCodeText.length() - 1; codeString.contains("d"); i--) {
+                    int j = codeString.lastIndexOf('d');
+                    char x = (i >= 0) ? decryptedCodeText.charAt(i) : '0';
+                    codeString = codeString.substring(0, j) + x + codeString.substring(j + 1);
+                }
+            }
+
+//            for (int i = code.getPattern().length() - 1; i >= 0 ; i--) {
+//                if(code.getPattern().charAt(i) == 'd') {
+//                    codeString = decryptedCodeText. + codeString;
+//                }
+//            }
+
+            //String cardString = String.format(Locale.getDefault(), "%04d", decryptedCode);
             String text = code.getLabel() + "\n" + codeString;
             SpannableString spannableString = new SpannableString(text);
             spannableString.setSpan(new RelativeSizeSpan(2), code.getLabel().length() + 1, text.length(), 0);

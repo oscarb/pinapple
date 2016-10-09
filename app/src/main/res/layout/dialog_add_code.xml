@@ -28,10 +28,10 @@
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/code"
-            android:digits="0123456789"
+            android:digits="0123456789*+#-. "
             android:hint="@string/code"
             android:inputType="number"
-            android:maxLength="9"
+            android:maxLength="15"
             style="@style/alert_dialog" />
 
     </android.support.design.widget.TextInputLayout>
