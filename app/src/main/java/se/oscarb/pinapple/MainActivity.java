@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         int columnGutterInPixels = getResources().getDimensionPixelSize(R.dimen.gutter);
         recyclerView.addItemDecoration(new CodeCardItemDecoration(columnGutterInPixels));
 
+
         // TODO: Add onItemLongClickListener for removal of codes?
 
         // Add the App Bar
