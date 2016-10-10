@@ -138,6 +138,7 @@ public class AddCodeDialogFragment extends DialogFragment implements TextWatcher
     // Interface for passing back data to host
     public interface AddCodeDialogListener {
         void onAddCodeDialogPositiveClick(DialogFragment dialog, String label, String value);
+
         void onAddCodeDialogNegativeClick(DialogFragment dialog);
     }
 

@@ -33,7 +33,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
         this.passcode = passcode;
     }
 
-    /* From RecyclerView.Adapte */
+    /* From RecyclerView.Adapter */
     @Override
     public int getItemCount() {
         return codeList.size();
@@ -70,10 +70,11 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
 
             long decryptedCode = Math.abs(crypto.decrypt(code.getEncryptedValue(), passcode));
 
-            String codeString = "";
+            String codeString;
             if (code.getPattern() == null) {
                 codeString = String.format(Locale.getDefault(), "%04d", decryptedCode);
             } else {
+                // Create string using pattern and decrypted code with zero-padding
                 codeString = code.getPattern();
 
                 String decryptedCodeText = String.valueOf(decryptedCode);
@@ -84,11 +85,6 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
                 }
             }
 
-//            for (int i = code.getPattern().length() - 1; i >= 0 ; i--) {
-//                if(code.getPattern().charAt(i) == 'd') {
-//                    codeString = decryptedCodeText. + codeString;
-//                }
-//            }
 
             //String cardString = String.format(Locale.getDefault(), "%04d", decryptedCode);
             String text = code.getLabel() + "\n" + codeString;
