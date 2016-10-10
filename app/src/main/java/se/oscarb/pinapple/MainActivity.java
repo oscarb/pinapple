@@ -1,6 +1,8 @@
 package se.oscarb.pinapple;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +20,8 @@ import android.view.View;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 
-import java.util.List;
+import se.oscarb.pinapple.databinding.ActivityMainBinding;
+
 
 /*
  * TODO: Keep scroll position on rotation
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     // Fields
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private List<Code> codeList;
+    private ObservableArrayList<Code> codeList;
 
     private CoordinatorLayout coordinatorLayout;
 
@@ -67,14 +70,18 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         }
 
 
+        //
         setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         // Initialize fields
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
         // Fill codeList
-        codeList = Code.getAll(); // get from SQLite
+        codeList = new ObservableArrayList<>();
+        codeList.addAll(Code.getAll()); // get from SQLite
         codeAdapter = new CodeAdapter(codeList, passcode);
+
 
         // Initialize RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.code_list_layout);
@@ -103,6 +110,11 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
                 addCodeDialog.show(getSupportFragmentManager(), "addCodeDialog");
             }
         });
+
+        // Bind codeList with UI
+        binding.setCodeList(codeList);
+        //binding.setCodeAdapter(codeAdapter);
+
     }
 
     @Override
