@@ -10,38 +10,37 @@
             type="android.databinding.ObservableArrayList&lt;se.oscarb.pinapple.Code&gt;" />
     </data>
 
-    <LinearLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorActivityBackground"
-    android:gravity="center"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="se.oscarb.pinapple.MainActivity"
-    tools:showIn="@layout/activity_main"
-    android:orientation="vertical">
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/code_list_layout"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingTop="@dimen/gutter"
-        android:paddingStart="@dimen/gutter"
-        android:paddingEnd="@dimen/gutter"
-        android:paddingBottom="@dimen/fab_size_plus_margin"
-        tools:listitem="@layout/card_code"
-        android:visibility="@{codeList.size() > 0 ? View.VISIBLE : View.GONE }" />
+        android:background="@color/colorActivityBackground"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="se.oscarb.pinapple.MainActivity"
+        tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="There are no codes to show"
-        android:paddingBottom="?android:actionBarSize"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:visibility="@{codeList.size() > 0 ? View.GONE : View.VISIBLE }" />
 
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/code_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/fab_size_plus_margin"
+            android:paddingEnd="@dimen/gutter"
+            android:paddingStart="@dimen/gutter"
+            android:paddingTop="@dimen/gutter"
+            android:visibility="@{codeList.size() > 0 ? View.VISIBLE : View.GONE }"
+            tools:listitem="@layout/card_code" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="?android:actionBarSize"
+            android:text="@string/empty_state_message"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="@{codeList.size() > 0 ? View.GONE : View.VISIBLE }" />
+
+    </LinearLayout>
 </layout>

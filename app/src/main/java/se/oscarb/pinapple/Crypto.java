@@ -10,6 +10,7 @@ public interface Crypto {
 
     // Encrypt and decrypt with message as long
     long encrypt(long messagePlainText, int key);
+
     long decrypt(long messageEncrypted, int key);
 
 

@@ -25,7 +25,6 @@ import se.oscarb.pinapple.databinding.ActivityMainBinding;
 
 /*
  * TODO: Keep scroll position on rotation
- * TODO: Add support for codees longer than 9 digits and increased security with passcode padding
  * TODO: Check "Analyze > Inspect Code..."
  *
  */
@@ -69,9 +68,8 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         }
 
-
-        //
         setContentView(R.layout.activity_main);
+        // Use data binding to toggle empty state
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         // Initialize fields
@@ -113,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Bind codeList with UI
         binding.setCodeList(codeList);
-        //binding.setCodeAdapter(codeAdapter);
 
     }
 
@@ -177,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Encrypt code
         Crypto crypto = new XorCrypto();
-
         long encryptedValue = crypto.encrypt(codeValue, passcode);
 
         // Save to database
@@ -203,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // No action
     }
 
+    // Clicking UNDO after code is added removes the latest code added
     private class UndoClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
