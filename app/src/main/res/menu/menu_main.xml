@@ -4,8 +4,8 @@
     tools:context="se.oscarb.pinapple.MainActivity">
     <item
         android:id="@+id/action_lock"
+        android:icon="@drawable/ic_lock_outline_white_24dp"
         android:orderInCategory="200"
         android:title="@string/lock"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_lock_outline_white_24dp" />
+        app:showAsAction="ifRoom" />
 </menu>

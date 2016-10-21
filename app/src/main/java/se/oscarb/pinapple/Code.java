@@ -34,7 +34,6 @@ public class Code extends Model {
     private String pattern;
 
 
-
     // TODO: Add length for zero padding
 
     /*

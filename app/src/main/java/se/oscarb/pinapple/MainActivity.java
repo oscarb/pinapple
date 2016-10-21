@@ -1,6 +1,8 @@
 package se.oscarb.pinapple;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,11 +20,11 @@ import android.view.View;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 
-import java.util.List;
+import se.oscarb.pinapple.databinding.ActivityMainBinding;
+
 
 /*
  * TODO: Keep scroll position on rotation
- * TODO: Add support for codees longer than 9 digits and increased security with passcode padding
  * TODO: Check "Analyze > Inspect Code..."
  *
  */
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     // Fields
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private List<Code> codeList;
+    private ObservableArrayList<Code> codeList;
 
     private CoordinatorLayout coordinatorLayout;
 
@@ -66,15 +68,18 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         }
 
-
         setContentView(R.layout.activity_main);
+        // Use data binding to toggle empty state
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         // Initialize fields
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
         // Fill codeList
-        codeList = Code.getAll(); // get from SQLite
+        codeList = new ObservableArrayList<>();
+        codeList.addAll(Code.getAll()); // get from SQLite
         codeAdapter = new CodeAdapter(codeList, passcode);
+
 
         // Initialize RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.code_list_layout);
@@ -84,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.spanCount), StaggeredGridLayoutManager.VERTICAL));
         int columnGutterInPixels = getResources().getDimensionPixelSize(R.dimen.gutter);
         recyclerView.addItemDecoration(new CodeCardItemDecoration(columnGutterInPixels));
+
 
         // TODO: Add onItemLongClickListener for removal of codes?
 
@@ -102,6 +108,10 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
                 addCodeDialog.show(getSupportFragmentManager(), "addCodeDialog");
             }
         });
+
+        // Bind codeList with UI
+        binding.setCodeList(codeList);
+
     }
 
     @Override
@@ -164,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Encrypt code
         Crypto crypto = new XorCrypto();
-
         long encryptedValue = crypto.encrypt(codeValue, passcode);
 
         // Save to database
@@ -190,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // No action
     }
 
+    // Clicking UNDO after code is added removes the latest code added
     private class UndoClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
