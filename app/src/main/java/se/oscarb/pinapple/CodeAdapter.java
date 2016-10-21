@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,10 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
     private Context context;
     private List<Code> codeList;
     private int passcode;
+
+
+    private RecyclerContextMenuInfo recyclerContextMenuInfo;
+
 
 
     // Constructor
@@ -51,6 +56,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
         // Return a ViewHolder
         return new ViewHolder(codeCardView);
     }
+
 
     // Populate cards
     @Override
@@ -91,11 +97,13 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
             SpannableString spannableString = new SpannableString(text);
             spannableString.setSpan(new RelativeSizeSpan(2), code.getLabel().length() + 1, text.length(), 0);
             contentText.setText(spannableString);
+
+            viewHolder.itemView.setLongClickable(true);
         }
     }
 
     // Cache the views using the ViewHolder pattern
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         // Fields
         public TextView labelText;
         public TextView codeText;
@@ -109,7 +117,23 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
             labelText = (TextView) itemView.findViewById(R.id.label);
             codeText = (TextView) itemView.findViewById(R.id.code);
             contentText = (TextView) itemView.findViewById(R.id.content);
+            itemView.setOnCreateContextMenuListener(this);
+        }
 
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.add(0, v.getId(), 0, "Archive");
+        }
+    }
+
+    public static class RecyclerContextMenuInfo implements ContextMenu.ContextMenuInfo {
+
+        final public int position;
+        final public long id;
+
+        public RecyclerContextMenuInfo(int position, long id) {
+            this.position = position;
+            this.id = id;
         }
     }
 }

@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -108,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
             }
         }));
 
+        registerForContextMenu(recyclerView);
+
         // Add the App Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,6 +130,27 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // Bind codeList with UI
         binding.setCodeList(codeList);
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        //AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        //codeAdapter.getItem(info.position);
+
+        //Toast.makeText(this, "Action on " + info.position, Toast.LENGTH_SHORT).show();
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        //AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        Toast.makeText(this, "Action!", Toast.LENGTH_SHORT).show();
+        return false;
+        //return super.onContextItemSelected(item);
     }
 
     @Override
