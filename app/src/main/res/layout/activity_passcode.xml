@@ -4,25 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorActivityBackground"
+    android:background="#455A64"
     android:orientation="vertical"
     tools:context="se.oscarb.pinapple.PasscodeActivity">
 
 
-    <ImageView
+    <TextView
+        android:text="Enter Passcode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLargeInverse"
+        android:layout_margin="24dp"
+        android:labelFor="@+id/passcode" />
+
+
+    <EditText
+        android:id="@+id/passcode"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:digits="0123456789"
+        android:inputType="numberPassword"
+        android:elevation="4dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="Four digit passcode field"
+        android:ems="8"
+        android:layout_width="wrap_content"
+        android:fontFamily="monospace"
+        android:lines="1"
+        android:textSize="24sp"
+        android:padding="16sp"
+        android:textAlignment="center" />
+
+    <TextView
+        android:text="What's this?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMediumInverse"
+        android:layout_margin="36dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
         android:layout_margin="@dimen/box_margin"
         android:contentDescription="@string/logo"
-        android:src="@drawable/logo" />
-
+        android:src="@drawable/logo"
+        android:scaleType="center"
+        android:scaleX="3"
+        android:scaleY="3"
+        android:layout_weight="1" />
+    <!--
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout"
         android:layout_width="@dimen/passcode_edit_text_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        app:errorEnabled="true">
+        app:errorEnabled="true"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:elevation="4dp">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/passcode"
@@ -39,6 +82,7 @@
         android:id="@+id/passcode_information"
         style="@style/information_highlight"
         android:text="@string/passcode_information" />
+-->
 
 
 </LinearLayout>

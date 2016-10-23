@@ -27,8 +27,9 @@ public class PasscodeActivity extends AppCompatActivity {
 
         // Initialize fields
         passcodeEditText = (EditText) findViewById(R.id.passcode);
-        textInputLayout = (TextInputLayout) findViewById(R.id.input_layout);
+        //textInputLayout = (TextInputLayout) findViewById(R.id.input_layout);
 
+        //passcodeEditText.setShowSoftInputOnFocus(true);
 
         passcodeEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -70,7 +71,7 @@ public class PasscodeActivity extends AppCompatActivity {
             toMainActivityIntent.putExtra(PASSCODE_MESSAGE, passcode);
             startActivity(toMainActivityIntent);
             passcodeEditText.setText("");
-            textInputLayout.setError(null);
+            //textInputLayout.setError(null);
             //finish();
 
         } catch (NumberFormatException exception) {
