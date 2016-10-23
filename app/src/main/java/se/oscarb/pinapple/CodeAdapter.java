@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +14,12 @@ import java.util.Locale;
 
 public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
 
+    private static int lastLongClickedPosition = -1;
+
     // Fields
     private Context context;
     private List<Code> codeList;
     private int passcode;
-
-
-    private RecyclerContextMenuInfo recyclerContextMenuInfo;
-
-
 
     // Constructor
     public CodeAdapter(Context c, List<Code> codes, int passcode) {
@@ -44,6 +40,9 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
         return codeList.size();
     }
 
+    public int getLastLongClickedPosition() {
+        return lastLongClickedPosition;
+    }
 
     @Override
     public CodeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -63,6 +62,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
     public void onBindViewHolder(CodeAdapter.ViewHolder viewHolder, int position) {
         // Get static references from our ViewHolder
         TextView contentText = viewHolder.contentText;
+        viewHolder.position = position;
 
         // Populate RecyclerView with each CardView
         if (codeList.size() > 0) {
@@ -98,13 +98,16 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
             spannableString.setSpan(new RelativeSizeSpan(2), code.getLabel().length() + 1, text.length(), 0);
             contentText.setText(spannableString);
 
+            viewHolder.itemView.setOnLongClickListener(viewHolder);
             viewHolder.itemView.setLongClickable(true);
+
         }
     }
 
     // Cache the views using the ViewHolder pattern
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         // Fields
+        public int position;
         public TextView labelText;
         public TextView codeText;
         public TextView contentText;
@@ -117,23 +120,13 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
             labelText = (TextView) itemView.findViewById(R.id.label);
             codeText = (TextView) itemView.findViewById(R.id.code);
             contentText = (TextView) itemView.findViewById(R.id.content);
-            itemView.setOnCreateContextMenuListener(this);
         }
 
         @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(0, v.getId(), 0, "Archive");
+        public boolean onLongClick(View v) {
+            lastLongClickedPosition = position;
+            return false;
         }
     }
 
-    public static class RecyclerContextMenuInfo implements ContextMenu.ContextMenuInfo {
-
-        final public int position;
-        final public long id;
-
-        public RecyclerContextMenuInfo(int position, long id) {
-            this.position = position;
-            this.id = id;
-        }
-    }
 }

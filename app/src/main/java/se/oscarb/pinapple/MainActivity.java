@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
@@ -141,14 +142,17 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         //Toast.makeText(this, "Action on " + info.position, Toast.LENGTH_SHORT).show();
 
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_code_context, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        //AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-        Toast.makeText(this, "Action!", Toast.LENGTH_SHORT).show();
+        int position = ((CodeAdapter) codeAdapter).getLastLongClickedPosition();
+
+        Toast.makeText(this, "Action on " + position, Toast.LENGTH_SHORT).show();
+
         return false;
         //return super.onContextItemSelected(item);
     }
