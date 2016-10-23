@@ -64,11 +64,15 @@ public class Code extends Model {
      * Database Methods
      */
     public static List<Code> getAll() {
-        return new Select().from(Code.class).where("Archived = ?", false).execute();
+        return new Select().from(Code.class).execute();
     }
 
-    public static List<Code> getArchived() {
-        return new Select().from(Code.class).where("Archived = ?", true).execute();
+    public static List<Code> getAll(boolean includeArchived) {
+        if (includeArchived) {
+            return getAll();
+        } else {
+            return new Select().from(Code.class).where("Archived = ?", false).execute();
+        }
     }
 
     /*

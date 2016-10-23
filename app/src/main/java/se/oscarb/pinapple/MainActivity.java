@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
     private int passcode;
 
+    static final String STATE_SHOW_ARCHIVED = "showArchived";
+
+    private boolean showArchived = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +81,16 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
         // Fill codeList
+
+/*
+        showArchivedCodesMenuItem = (MenuItem) findViewById(R.id.action_show_archived);
+        showArchivedCodesMenuItem.setChecked((savedInstanceState != null) && savedInstanceState.getBoolean(STATE_SHOW_ARCHIVED));
+*/
+        showArchived = (savedInstanceState != null) && savedInstanceState.getBoolean(STATE_SHOW_ARCHIVED);
+
+
         codeList = new ObservableArrayList<>();
-        codeList.addAll(Code.getAll()); // get from SQLite
+        codeList.addAll(Code.getAll(showArchived)); // get all non archived from SQLite
         codeAdapter = new CodeAdapter(codeList, passcode);
 
 
@@ -151,8 +163,13 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         if (BuildConfig.DEBUG) {
             getMenuInflater().inflate(R.menu.menu_main_debug, menu);
         }
-
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_show_archived).setChecked(showArchived);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -161,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
 
         if (id == R.id.action_clear_all && BuildConfig.DEBUG) {
             // Clear all codes
@@ -177,9 +193,46 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
             //toPasscodeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(toPasscodeActivityIntent);
             finish();
+        } else if (id == R.id.action_show_archived) {
+            // Toggle display archived codes
+            //item.isChecked()
+            item.setChecked(!item.isChecked());
+            toggleDisplayedCodes(item.isChecked());
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //boolean showArchived = showArchivedCodesMenuItem.isChecked();
+        outState.putBoolean(STATE_SHOW_ARCHIVED, showArchived);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        MenuItem showArchivedMenuItem = (MenuItem) findViewById(R.id.action_show_archived);
+        if (showArchivedMenuItem != null) {
+            showArchivedMenuItem.setChecked(savedInstanceState.getBoolean(STATE_SHOW_ARCHIVED));
+        }
+
+    }
+
+    private void toggleDisplayedCodes(boolean showArchived) {
+        codeList.clear();
+        if (showArchived) {
+            codeList.addAll(Code.getAll());
+        } else {
+            codeList.addAll(Code.getAll(false));
+        }
+
+        this.showArchived = showArchived;
+
+        //codeAdapter.notify();
+        codeAdapter.notifyDataSetChanged();
     }
 
     // Implemented from AddCodeDialogListener within AddCodeDialogFragment
