@@ -15,7 +15,7 @@ import java.util.Locale;
 public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
 
     private static int lastLongClickedPosition = -1;
-
+    private static Code lastLongClickedCode;
     // Fields
     private Context context;
     private List<Code> codeList;
@@ -32,6 +32,10 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
     public CodeAdapter(List<Code> codeList, int passcode) {
         this.codeList = codeList;
         this.passcode = passcode;
+    }
+
+    public Code getLastLongClickedCode() {
+        return lastLongClickedCode;
     }
 
     /* From RecyclerView.Adapter */
@@ -68,6 +72,8 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
         if (codeList.size() > 0) {
             Code code = codeList.get(position);
 
+            viewHolder.code = code;
+
             // Set data with only one EditText
             // http://stackoverflow.com/questions/16335178/different-size-of-strings-in-the-same-textview
 
@@ -101,12 +107,14 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
             viewHolder.itemView.setOnLongClickListener(viewHolder);
             viewHolder.itemView.setLongClickable(true);
 
+
         }
     }
 
     // Cache the views using the ViewHolder pattern
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         // Fields
+        public Code code;
         public int position;
         public TextView labelText;
         public TextView codeText;
@@ -124,7 +132,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
 
         @Override
         public boolean onLongClick(View v) {
-            lastLongClickedPosition = position;
+            lastLongClickedCode = code;
             return false;
         }
     }

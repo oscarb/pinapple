@@ -18,4 +18,5 @@
     <string name="code_added">Code added</string>
     <string name="code_removed">Removed code</string>
     <string name="empty_state_message">There are no codes to show</string>
+    <string name="code_archived">Code archived</string>
 </resources>

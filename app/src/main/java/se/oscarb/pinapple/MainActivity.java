@@ -1,6 +1,5 @@
 package se.oscarb.pinapple;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
@@ -15,13 +14,9 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
@@ -96,20 +91,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         int columnGutterInPixels = getResources().getDimensionPixelSize(R.dimen.gutter);
         recyclerView.addItemDecoration(new CodeCardItemDecoration(columnGutterInPixels));
 
-
-        // TODO: Add onItemLongClickListener for removal of codes?
-        recyclerView.addOnItemTouchListener(new OnCodeTouchListener(this, recyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Toast.makeText(MainActivity.this, "Single click " + position, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(MainActivity.this, "Long click " + position, Toast.LENGTH_SHORT).show();
-            }
-        }));
-
         registerForContextMenu(recyclerView);
 
         // Add the App Bar
@@ -137,24 +118,29 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        //AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        //codeAdapter.getItem(info.position);
-
-        //Toast.makeText(this, "Action on " + info.position, Toast.LENGTH_SHORT).show();
-
         getMenuInflater().inflate(R.menu.menu_code_context, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Code code = ((CodeAdapter) codeAdapter).getLastLongClickedCode();
 
-        int position = ((CodeAdapter) codeAdapter).getLastLongClickedPosition();
+        switch (item.getItemId()) {
+            case R.id.action_archive:
+                archiveCode(code);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 
-        Toast.makeText(this, "Action on " + position, Toast.LENGTH_SHORT).show();
+    private void archiveCode(Code code) {
+        int position = codeList.indexOf(code);
+        code.archive();
+        codeList.remove(code);
+        codeAdapter.notifyItemRemoved(position);
 
-        return false;
-        //return super.onContextItemSelected(item);
+        Snackbar.make(coordinatorLayout, R.string.code_archived, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -242,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // No action
     }
 
-    public static interface ClickListener {
+  /*  public static interface ClickListener {
         public void onClick(View view, int position);
 
         public void onLongClick(View view, int position);
@@ -290,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
-    }
+    }*/
 
     // Clicking UNDO after code is added removes the latest code added
     private class UndoClickListener implements View.OnClickListener {
