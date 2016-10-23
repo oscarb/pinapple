@@ -114,4 +114,8 @@ public class Code extends Model {
                 ", label='" + label + '\'' +
                 '}';
     }
+
+    public boolean isArchived() {
+        return isArchived;
+    }
 }

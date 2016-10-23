@@ -33,21 +33,15 @@ import se.oscarb.pinapple.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity implements AddCodeDialogFragment.AddCodeDialogListener {
 
 
+    static final String STATE_SHOW_ARCHIVED = "showArchived";
     // Fields
     private static final String TAG = MainActivity.class.getSimpleName();
-
     private ObservableArrayList<Code> codeList;
-
     private CoordinatorLayout coordinatorLayout;
-
     private RecyclerView recyclerView;
     private RecyclerView.Adapter codeAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
     private int passcode;
-
-    static final String STATE_SHOW_ARCHIVED = "showArchived";
-
     private boolean showArchived = false;
 
 
@@ -80,24 +74,19 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // Initialize fields
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
-        // Fill codeList
-
-/*
-        showArchivedCodesMenuItem = (MenuItem) findViewById(R.id.action_show_archived);
-        showArchivedCodesMenuItem.setChecked((savedInstanceState != null) && savedInstanceState.getBoolean(STATE_SHOW_ARCHIVED));
-*/
+        // Restore state
         showArchived = (savedInstanceState != null) && savedInstanceState.getBoolean(STATE_SHOW_ARCHIVED);
 
-
+        // Fill codeList
         codeList = new ObservableArrayList<>();
         codeList.addAll(Code.getAll(showArchived)); // get all non archived from SQLite
-        codeAdapter = new CodeAdapter(codeList, passcode);
-
+        codeAdapter = new CodeAdapter(this, codeList, passcode);
 
         // Initialize RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.code_list_layout);
         recyclerView.setAdapter(codeAdapter);
         recyclerView.setHasFixedSize(true); // improves performance
+
         // Set LayoutManager
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.spanCount), StaggeredGridLayoutManager.VERTICAL));
         int columnGutterInPixels = getResources().getDimensionPixelSize(R.dimen.gutter);
@@ -129,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-
         getMenuInflater().inflate(R.menu.menu_code_context, menu);
     }
 
@@ -149,8 +137,13 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     private void archiveCode(Code code) {
         int position = codeList.indexOf(code);
         code.archive();
-        codeList.remove(code);
-        codeAdapter.notifyItemRemoved(position);
+
+        if (!showArchived) {
+            codeList.remove(code);
+            codeAdapter.notifyItemRemoved(position);
+        } else {
+            codeAdapter.notifyDataSetChanged();
+        }
 
         Snackbar.make(coordinatorLayout, R.string.code_archived, Snackbar.LENGTH_SHORT).show();
     }
@@ -168,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        // Restore checkbox state
         menu.findItem(R.id.action_show_archived).setChecked(showArchived);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -190,12 +184,10 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         } else if (id == R.id.action_lock) {
             // Back to PasscodeActivity
             Intent toPasscodeActivityIntent = new Intent(this, PasscodeActivity.class);
-            //toPasscodeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(toPasscodeActivityIntent);
             finish();
         } else if (id == R.id.action_show_archived) {
             // Toggle display archived codes
-            //item.isChecked()
             item.setChecked(!item.isChecked());
             toggleDisplayedCodes(item.isChecked());
         }
@@ -205,21 +197,12 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        //boolean showArchived = showArchivedCodesMenuItem.isChecked();
+        // Save checkbox state
         outState.putBoolean(STATE_SHOW_ARCHIVED, showArchived);
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
 
-        MenuItem showArchivedMenuItem = (MenuItem) findViewById(R.id.action_show_archived);
-        if (showArchivedMenuItem != null) {
-            showArchivedMenuItem.setChecked(savedInstanceState.getBoolean(STATE_SHOW_ARCHIVED));
-        }
-
-    }
 
     private void toggleDisplayedCodes(boolean showArchived) {
         codeList.clear();
@@ -230,8 +213,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         }
 
         this.showArchived = showArchived;
-
-        //codeAdapter.notify();
         codeAdapter.notifyDataSetChanged();
     }
 
@@ -280,56 +261,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     public void onAddCodeDialogNegativeClick(DialogFragment dialog) {
         // No action
     }
-
-  /*  public static interface ClickListener {
-        public void onClick(View view, int position);
-
-        public void onLongClick(View view, int position);
-    }
-
-    class OnCodeTouchListener implements RecyclerView.OnItemTouchListener {
-
-        private ClickListener clickListener;
-        private GestureDetector gestureDetector;
-
-        public OnCodeTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildAdapterPosition(child));
-                    }
-                    super.onLongPress(e);
-                }
-            });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildAdapterPosition(child));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
-    }*/
 
     // Clicking UNDO after code is added removes the latest code added
     private class UndoClickListener implements View.OnClickListener {

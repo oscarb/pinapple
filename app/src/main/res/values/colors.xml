@@ -9,4 +9,5 @@
     <color name="colorIcons">#212121</color>
     <color name="colorDivider">#B6B6B6</color>
     <color name="colorActivityBackground">#EEEEEE</color> <!-- E6E6E6 -->
+    <color name="colorArchivedCardBackground">#e3e3e3</color>
 </resources>
