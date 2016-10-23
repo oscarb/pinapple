@@ -19,4 +19,5 @@
     <string name="code_added">Koden lades till</string>
     <string name="code_removed">Koden togs bort</string>
     <string name="empty_state_message">Det finns inga koder att visa</string>
+    <string name="code_archived">Koden arkiverades</string>
 </resources>

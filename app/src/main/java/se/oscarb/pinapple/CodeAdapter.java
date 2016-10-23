@@ -1,6 +1,7 @@
 package se.oscarb.pinapple;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -14,11 +15,11 @@ import java.util.Locale;
 
 public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
 
+    private static Code lastLongClickedCode;
     // Fields
     private Context context;
     private List<Code> codeList;
     private int passcode;
-
 
     // Constructor
     public CodeAdapter(Context c, List<Code> codes, int passcode) {
@@ -33,12 +34,15 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
         this.passcode = passcode;
     }
 
+    public Code getLastLongClickedCode() {
+        return lastLongClickedCode;
+    }
+
     /* From RecyclerView.Adapter */
     @Override
     public int getItemCount() {
         return codeList.size();
     }
-
 
     @Override
     public CodeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,20 +56,24 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
         return new ViewHolder(codeCardView);
     }
 
+
     // Populate cards
     @Override
     public void onBindViewHolder(CodeAdapter.ViewHolder viewHolder, int position) {
         // Get static references from our ViewHolder
         TextView contentText = viewHolder.contentText;
+        viewHolder.position = position;
 
         // Populate RecyclerView with each CardView
         if (codeList.size() > 0) {
+            // Bind view with code object
             Code code = codeList.get(position);
+            viewHolder.code = code;
 
             // Set data with only one EditText
             // http://stackoverflow.com/questions/16335178/different-size-of-strings-in-the-same-textview
 
-            // Decrypt code and pad to 4 digits
+            // Decrypt code and pad to pattern
             Crypto crypto = new XorCrypto();
 
             long decryptedCode = Math.abs(crypto.decrypt(code.getEncryptedValue(), passcode));
@@ -85,20 +93,33 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
                 }
             }
 
-
             //String cardString = String.format(Locale.getDefault(), "%04d", decryptedCode);
             String text = code.getLabel() + "\n" + codeString;
             SpannableString spannableString = new SpannableString(text);
             spannableString.setSpan(new RelativeSizeSpan(2), code.getLabel().length() + 1, text.length(), 0);
             contentText.setText(spannableString);
+
+            viewHolder.itemView.setOnLongClickListener(viewHolder);
+            viewHolder.itemView.setLongClickable(true);
+
+            // Set apperance depending if code is archived
+            int backgroundColorId = code.isArchived() ? R.color.colorArchivedCardBackground : R.color.cardview_light_background;
+            int textColor = code.isArchived() ? R.color.colorSecondaryText : R.color.colorPrimaryText;
+            viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(context, backgroundColorId));
+            ((TextView) viewHolder.itemView.findViewById(R.id.content)).setTextColor(ContextCompat.getColor(context, textColor));
+
+            if (code.isArchived()) {
+                viewHolder.itemView.setOnLongClickListener(null);
+                viewHolder.itemView.setLongClickable(false);
+            }
         }
     }
 
     // Cache the views using the ViewHolder pattern
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         // Fields
-        public TextView labelText;
-        public TextView codeText;
+        public Code code;
+        public int position;
         public TextView contentText;
 
 
@@ -106,10 +127,14 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
 
-            labelText = (TextView) itemView.findViewById(R.id.label);
-            codeText = (TextView) itemView.findViewById(R.id.code);
             contentText = (TextView) itemView.findViewById(R.id.content);
+        }
 
+        @Override
+        public boolean onLongClick(View v) {
+            lastLongClickedCode = code;
+            return false;
         }
     }
+
 }

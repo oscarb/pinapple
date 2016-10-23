@@ -34,8 +34,6 @@ public class Code extends Model {
     private String pattern;
 
 
-    // TODO: Add length for zero padding
-
     /*
         Constructors
      */
@@ -69,6 +67,14 @@ public class Code extends Model {
         return new Select().from(Code.class).execute();
     }
 
+    public static List<Code> getAll(boolean includeArchived) {
+        if (includeArchived) {
+            return getAll();
+        } else {
+            return new Select().from(Code.class).where("Archived = ?", false).execute();
+        }
+    }
+
     /*
         Methods
      */
@@ -92,6 +98,11 @@ public class Code extends Model {
         return pattern;
     }
 
+    public void archive() {
+        isArchived = true;
+        save();
+    }
+
     public int getNumberOfDigits() {
         return getPattern().length() - getPattern().replace("d", "").length();
     }
@@ -102,5 +113,9 @@ public class Code extends Model {
                 "encryptedValue='" + encryptedValue + '\'' +
                 ", label='" + label + '\'' +
                 '}';
+    }
+
+    public boolean isArchived() {
+        return isArchived;
     }
 }

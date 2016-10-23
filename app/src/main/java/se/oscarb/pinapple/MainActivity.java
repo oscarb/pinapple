@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,18 +33,16 @@ import se.oscarb.pinapple.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity implements AddCodeDialogFragment.AddCodeDialogListener {
 
 
+    static final String STATE_SHOW_ARCHIVED = "showArchived";
     // Fields
     private static final String TAG = MainActivity.class.getSimpleName();
-
     private ObservableArrayList<Code> codeList;
-
     private CoordinatorLayout coordinatorLayout;
-
     private RecyclerView recyclerView;
     private RecyclerView.Adapter codeAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
     private int passcode;
+    private boolean showArchived = false;
 
 
     @Override
@@ -75,23 +74,25 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // Initialize fields
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
+        // Restore state
+        showArchived = (savedInstanceState != null) && savedInstanceState.getBoolean(STATE_SHOW_ARCHIVED);
+
         // Fill codeList
         codeList = new ObservableArrayList<>();
-        codeList.addAll(Code.getAll()); // get from SQLite
-        codeAdapter = new CodeAdapter(codeList, passcode);
-
+        codeList.addAll(Code.getAll(showArchived)); // get all non archived from SQLite
+        codeAdapter = new CodeAdapter(this, codeList, passcode);
 
         // Initialize RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.code_list_layout);
         recyclerView.setAdapter(codeAdapter);
         recyclerView.setHasFixedSize(true); // improves performance
+
         // Set LayoutManager
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.spanCount), StaggeredGridLayoutManager.VERTICAL));
         int columnGutterInPixels = getResources().getDimensionPixelSize(R.dimen.gutter);
         recyclerView.addItemDecoration(new CodeCardItemDecoration(columnGutterInPixels));
 
-
-        // TODO: Add onItemLongClickListener for removal of codes?
+        registerForContextMenu(recyclerView);
 
         // Add the App Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -115,6 +116,39 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.menu_code_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Code code = ((CodeAdapter) codeAdapter).getLastLongClickedCode();
+
+        switch (item.getItemId()) {
+            case R.id.action_archive:
+                archiveCode(code);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void archiveCode(Code code) {
+        int position = codeList.indexOf(code);
+        code.archive();
+
+        if (!showArchived) {
+            codeList.remove(code);
+            codeAdapter.notifyItemRemoved(position);
+        } else {
+            codeAdapter.notifyDataSetChanged();
+        }
+
+        Snackbar.make(coordinatorLayout, R.string.code_archived, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -122,8 +156,14 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         if (BuildConfig.DEBUG) {
             getMenuInflater().inflate(R.menu.menu_main_debug, menu);
         }
-
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Restore checkbox state
+        menu.findItem(R.id.action_show_archived).setChecked(showArchived);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -132,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
 
         if (id == R.id.action_clear_all && BuildConfig.DEBUG) {
             // Clear all codes
@@ -145,12 +184,36 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
         } else if (id == R.id.action_lock) {
             // Back to PasscodeActivity
             Intent toPasscodeActivityIntent = new Intent(this, PasscodeActivity.class);
-            //toPasscodeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(toPasscodeActivityIntent);
             finish();
+        } else if (id == R.id.action_show_archived) {
+            // Toggle display archived codes
+            item.setChecked(!item.isChecked());
+            toggleDisplayedCodes(item.isChecked());
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // Save checkbox state
+        outState.putBoolean(STATE_SHOW_ARCHIVED, showArchived);
+        super.onSaveInstanceState(outState);
+    }
+
+
+
+    private void toggleDisplayedCodes(boolean showArchived) {
+        codeList.clear();
+        if (showArchived) {
+            codeList.addAll(Code.getAll());
+        } else {
+            codeList.addAll(Code.getAll(false));
+        }
+
+        this.showArchived = showArchived;
+        codeAdapter.notifyDataSetChanged();
     }
 
     // Implemented from AddCodeDialogListener within AddCodeDialogFragment
