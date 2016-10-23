@@ -245,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         codeList.add(code);
         codeAdapter.notifyItemInserted(codeListSize);
+        codeAdapter.notifyDataSetChanged();
 
         // Scroll to last card added
         recyclerView.scrollToPosition(codeAdapter.getItemCount() - 1);
