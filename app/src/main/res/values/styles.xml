@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,16 +17,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="information_highlight">
-        <item name="android:layout_width">@dimen/passcode_information_width</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_margin">@dimen/box_margin</item>
-        <item name="android:background">@color/colorAccent</item>
-        <item name="android:padding">@dimen/box_padding</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
     <style name="alert_dialog">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -35,5 +24,24 @@
         <item name="android:paddingTop">16dp</item>
         <item name="android:singleLine">true</item>
     </style>
+
+    <style name="passcode_field_defaults">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@color/colorPasscodeFieldBackground</item>
+        <item name="android:digits">0123456789</item>
+        <item name="android:inputType">numberPassword</item>
+        <item name="android:contentDescription">Four digit passcode field</item>
+        <item name="android:ems">6</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:lines">1</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:padding">16sp</item>
+    </style>
+
+    <style name="passcode_field" parent="passcode_field_defaults">
+
+    </style>
+
 
 </resources>

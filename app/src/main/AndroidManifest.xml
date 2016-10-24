@@ -24,7 +24,7 @@
         <activity
             android:name=".PasscodeActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/PasscodeTheme"
             android:windowSoftInputMode="stateVisible">
 
         </activity>

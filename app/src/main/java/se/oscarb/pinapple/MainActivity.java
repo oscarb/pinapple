@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
 
         // Show undo action
         final Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.code_added, Snackbar.LENGTH_LONG);
-        snackbar.setAction("Undo", new UndoClickListener());
+        snackbar.setAction(R.string.undo, new UndoClickListener());
         snackbar.show();
 
     }

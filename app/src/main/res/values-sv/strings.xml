@@ -8,16 +8,21 @@
     <string name="clear_all">Ta bort alla koder</string>
     <string name="code">Kod</string>
     <string name="code_is_required">Ange en kod</string>
-    <string name="enter_a_passcode">Ange en fyrsiffrig lösenordskod</string>
+    <string name="enter_a_passcode">Ange en fyrsiffrig åtkomstkod</string>
     <string name="label">Namn</string>
     <string name="label_is_required">Ange ett namn</string>
     <string name="logo">Logotyp</string>
-    <string name="passcode">Ange en fyrsiffrig lösenord</string>
-    <string name="passcode_information">Alla lösenord visar koder. Men, bara lösenordet som användes när koderna lades till kommer visa de rätta koderna.</string>
     <string name="show_codes">Visa koder</string>
     <string name="lock">Lås</string>
     <string name="code_added">Koden lades till</string>
     <string name="code_removed">Koden togs bort</string>
     <string name="empty_state_message">Det finns inga koder att visa</string>
     <string name="code_archived">Koden arkiverades</string>
+    <string name="what_is_this">Vad är detta?</string>
+    <string name="enter_passcode">Ange åtkomstkod</string>
+    <string name="passcode_information">Välj en fyrsiffrig åtkomstkod som du anger för att spara och visa dina PIN-koder.\n\nPinapple kommer att visa andra PIN-koder om en annan åtkomstkod anges.</string>
+    <string name="got_it">Coolt!</string>
+    <string name="show_archived">Visa arkiverade</string>
+    <string name="undo">Ångra</string>
+    <string name="archive">Arkivera</string>
 </resources>

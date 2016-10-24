@@ -4,5 +4,5 @@
     tools:context="se.oscarb.pinapple.MainActivity">
     <item
         android:id="@+id/action_archive"
-        android:title="Archive" />
+        android:title="@string/archive" />
 </menu>
