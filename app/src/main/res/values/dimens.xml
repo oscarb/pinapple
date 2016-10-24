@@ -5,8 +5,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_size_plus_margin">88dp</dimen>
     <dimen name="gutter">4dp</dimen>
-    <dimen name="passcode_edit_text_width">200sp</dimen>
-    <dimen name="passcode_information_width">300dp</dimen>
     <dimen name="box_margin">24dp</dimen>
     <dimen name="box_padding">12dp</dimen>
 </resources>

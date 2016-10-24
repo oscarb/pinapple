@@ -4,20 +4,16 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/background_dark</item>
-
     </style>
 
-
-    <style name="information_highlight">
-        <item name="android:layout_width">@dimen/passcode_information_width</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_margin">@dimen/box_margin</item>
-        <item name="android:background">@color/colorAccent</item>
-        <item name="android:padding">@dimen/box_padding</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:elevation">2dp</item>
+    <style name="PasscodeTheme" parent="AppTheme.NoActionBar">
+        <item name="android:statusBarColor">@color/colorActivityBackgroundNoActionBarDark</item>
     </style>
+
+    <style name="passcode_field" parent="passcode_field_defaults">
+        <item name="android:elevation">4dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
 
 </resources>

@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorActivityBackground"
+    android:background="@color/colorActivityBackgroundNoActionBar"
     android:orientation="vertical"
     tools:context="se.oscarb.pinapple.PasscodeActivity">
 
 
-    <ImageView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/box_margin"
-        android:contentDescription="@string/logo"
-        android:src="@drawable/logo" />
+        android:layout_margin="24dp"
+        android:labelFor="@+id/passcode"
+        android:text="@string/enter_passcode"
+        android:textAppearance="?android:attr/textAppearanceLargeInverse" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout"
-        android:layout_width="@dimen/passcode_edit_text_width"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        app:errorEnabled="true">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/passcode"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:digits="0123456789"
-            android:fontFamily="sans-serif"
-            android:hint="@string/enter_a_passcode"
-            android:inputType="numberPassword" />
-
-    </android.support.design.widget.TextInputLayout>
+    <EditText
+        android:id="@+id/passcode"
+        style="@style/passcode_field"
+        android:layout_gravity="center_horizontal" />
 
     <TextView
-        android:id="@+id/passcode_information"
-        style="@style/information_highlight"
-        android:text="@string/passcode_information" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="36dp"
+        android:onClick="showHelp"
+        android:text="@string/what_is_this"
+        android:textAppearance="?android:attr/textAppearanceMediumInverse" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/box_margin"
+        android:layout_weight="1"
+        android:contentDescription="@string/logo"
+        android:scaleX="3"
+        android:scaleY="3"
+        android:src="@drawable/logo" />
 
 </LinearLayout>
