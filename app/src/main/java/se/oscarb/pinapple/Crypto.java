@@ -13,5 +13,7 @@ public interface Crypto {
 
     long decrypt(long messageEncrypted, int key);
 
+    long decrypt(long messageEncrypted, int key, int messageDecryptedLength);
+
 
 }

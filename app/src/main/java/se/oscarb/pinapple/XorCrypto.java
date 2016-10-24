@@ -30,6 +30,11 @@ public class XorCrypto implements Crypto {
         return messagePlainText ^ repeatKey(key, getLength(messagePlainText));
     }
 
+    public long decrypt(long messagePlainText, int key, int decryptedMessageLength) {
+        return messagePlainText ^ repeatKey(key, decryptedMessageLength);
+    }
+
+
     public long decrypt(String messagePlainText, String key) {
         return encrypt(Long.valueOf(messagePlainText), Integer.valueOf(key));
     }

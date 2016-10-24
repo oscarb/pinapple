@@ -76,7 +76,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
             // Decrypt code and pad to pattern
             Crypto crypto = new XorCrypto();
 
-            long decryptedCode = Math.abs(crypto.decrypt(code.getEncryptedValue(), passcode));
+            long decryptedCode = Math.abs(crypto.decrypt(code.getEncryptedValue(), passcode, code.getNumberOfDigits()));
 
             String codeString;
             if (code.getPattern() == null) {
