@@ -10,8 +10,8 @@ android {
         applicationId "se.oscarb.pinapple"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 7
-        versionName "0.3.3"
+        versionCode 8
+        versionName "0.5.0"
     }
     buildTypes {
         debug {
