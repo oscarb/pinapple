@@ -8,7 +8,6 @@
     <string name="clear_all">Ta bort alla koder</string>
     <string name="code">Kod</string>
     <string name="code_is_required">Ange en kod</string>
-    <string name="enter_a_passcode">Ange en fyrsiffrig åtkomstkod</string>
     <string name="label">Namn</string>
     <string name="label_is_required">Ange ett namn</string>
     <string name="logo">Logotyp</string>

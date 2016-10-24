@@ -21,7 +21,8 @@
     <EditText
         android:id="@+id/passcode"
         style="@style/passcode_field"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:hint="Passcode" />
 
     <TextView
         android:layout_width="wrap_content"

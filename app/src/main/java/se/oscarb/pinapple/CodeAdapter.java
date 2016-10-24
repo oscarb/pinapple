@@ -62,7 +62,6 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
     public void onBindViewHolder(CodeAdapter.ViewHolder viewHolder, int position) {
         // Get static references from our ViewHolder
         TextView contentText = viewHolder.contentText;
-        viewHolder.position = position;
 
         // Populate RecyclerView with each CardView
         if (codeList.size() > 0) {
@@ -102,7 +101,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
             viewHolder.itemView.setOnLongClickListener(viewHolder);
             viewHolder.itemView.setLongClickable(true);
 
-            // Set apperance depending if code is archived
+            // Set appearance depending if code is archived
             int backgroundColorId = code.isArchived() ? R.color.colorArchivedCardBackground : R.color.cardview_light_background;
             int textColor = code.isArchived() ? R.color.colorSecondaryText : R.color.colorPrimaryText;
             viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(context, backgroundColorId));
@@ -119,7 +118,6 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         // Fields
         public Code code;
-        public int position;
         public TextView contentText;
 
 
