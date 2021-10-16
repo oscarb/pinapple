@@ -1,8 +1,9 @@
 package se.oscarb.pinapple;
 
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /*
  * Add gutter (margin between cards in the GridLayout)

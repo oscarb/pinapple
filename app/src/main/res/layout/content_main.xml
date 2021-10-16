@@ -7,7 +7,7 @@
 
         <variable
             name="codeList"
-            type="android.databinding.ObservableArrayList&lt;se.oscarb.pinapple.Code&gt;" />
+            type="androidx.databinding.ObservableArrayList&lt;se.oscarb.pinapple.Code&gt;" />
     </data>
 
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -22,7 +22,7 @@
         tools:showIn="@layout/activity_main">
 
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/code_list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

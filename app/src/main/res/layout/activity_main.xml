@@ -6,10 +6,10 @@
 
         <variable
             name="codeList"
-            type="android.databinding.ObservableArrayList&lt;se.oscarb.pinapple.Code&gt;" />
+            type="androidx.databinding.ObservableArrayList&lt;se.oscarb.pinapple.Code&gt;" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
@@ -17,26 +17,26 @@
         android:fitsSystemWindows="true"
         tools:context="se.oscarb.pinapple.MainActivity">
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        </android.support.design.widget.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <include
             android:id="@+id/content_main"
             layout="@layout/content_main"
             bind:codeList="@{codeList}" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,5 +44,5 @@
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add" />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
