@@ -1,44 +1,49 @@
-apply plugin: 'com.android.application'
-
-android {
-    compileSdkVersion 31
-    buildToolsVersion '24.0.3'
-    dataBinding {
-        enabled = true
-    }
-    defaultConfig {
-        applicationId "se.oscarb.pinapple"
-        minSdkVersion 16
-        targetSdkVersion 31
-        versionCode 10
-        versionName "0.6.0"
-    }
-    buildTypes {
-        debug {
-            applicationIdSuffix '.debug'
-            versionNameSuffix '-DEBUG'
-        }
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    productFlavors {
-    }
+plugins {
+    id 'com.android.application'
 }
 
-repositories {
-    mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+android {
+    namespace = 'se.oscarb.pinapple'
+    compileSdk = 37
+    buildToolsVersion = '37.0.0'
+
+    defaultConfig {
+        applicationId = "se.oscarb.pinapple"
+        minSdk = 23
+        targetSdk = 37
+        versionCode = 10
+        versionName = "0.6.0"
+    }
+
+    buildFeatures {
+        dataBinding = true
+        buildConfig = true
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix = '.debug'
+            versionNameSuffix = '-DEBUG'
+        }
+        release {
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'androidx.appcompat:appcompat:1.0.0'
-    compile 'com.google.android.material:material:1.0.0'
-    compile 'androidx.recyclerview:recyclerview:1.0.0'
-    compile 'androidx.cardview:cardview:1.0.0'
-    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'androidx.appcompat:appcompat:1.8.0'
+    implementation 'com.google.android.material:material:1.14.0'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.github.pardom:ActiveAndroid:08c6335cd7'
 }

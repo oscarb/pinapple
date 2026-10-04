@@ -103,7 +103,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.ViewHolder> {
             viewHolder.itemView.setLongClickable(true);
 
             // Set appearance depending if code is archived
-            int backgroundColorId = code.isArchived() ? R.color.colorArchivedCardBackground : R.color.cardview_light_background;
+            int backgroundColorId = code.isArchived() ? R.color.colorArchivedCardBackground : R.color.colorCardBackground;
             int textColor = code.isArchived() ? R.color.colorSecondaryText : R.color.colorPrimaryText;
             viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(context, backgroundColorId));
             ((TextView) viewHolder.itemView.findViewById(R.id.content)).setTextColor(ContextCompat.getColor(context, textColor));

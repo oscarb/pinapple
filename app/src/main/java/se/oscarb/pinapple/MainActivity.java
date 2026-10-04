@@ -126,13 +126,12 @@ public class MainActivity extends AppCompatActivity implements AddCodeDialogFrag
     public boolean onContextItemSelected(MenuItem item) {
         Code code = ((CodeAdapter) codeAdapter).getLastLongClickedCode();
 
-        switch (item.getItemId()) {
-            case R.id.action_archive:
-                archiveCode(code);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
+        if (item.getItemId() == R.id.action_archive) {
+            archiveCode(code);
+            return true;
         }
+
+        return super.onContextItemSelected(item);
     }
 
     private void archiveCode(Code code) {
